@@ -2,6 +2,7 @@
 import requests
 import datetime
 import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
 
 
 class FMIOpenData:
@@ -198,6 +199,12 @@ class FMIOpenData:
             xmlstring = req.content
             tree = ET.ElementTree(ET.fromstring(xmlstring))
             positions, params = self.parse_multipointcoverage(tree)
+        else:
+            print(f"\n{req.reason}")
+            print(f"Status_code: {req.status_code}")
+            print("Contents:\n----")
+            print(BeautifulSoup(req.content, "xml").prettify())
+            exit(-1)
             
         return positions, params
 
