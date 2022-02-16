@@ -161,7 +161,7 @@ class FMIOpenData:
                 moment = {'time': temporal_pos}
                 j = 0
 
-                for id,p in params.iteritems():
+                for id,p in params.items():
                     moment[id] = data[i][j]
                     j = j+1
                     
@@ -174,7 +174,7 @@ class FMIOpenData:
         return positions, params
 
     def print_parameters(self, params):
-        for p,label in params.iteritems():
+        for p,label in params.items():
             print(f"{p}': {label}")
 
     def print_positions(self, positions, params):
@@ -186,9 +186,9 @@ class FMIOpenData:
             print("----")
             for moment in positions[pos]:                
                 print(f" {moment['time'].isoformat()}")
-                for p,value in moment.iteritems():
+                for p,value in moment.items():
                     if p != 'time' and value != 'NaN':
-                        print("  {params[p],value}")
+                        print(f"  {params[p],value}")
 
     def get_data(self, stored_query,bbox,firstdate,lastdate):
         """ Get data """
