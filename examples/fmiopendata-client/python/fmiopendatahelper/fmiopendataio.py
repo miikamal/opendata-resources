@@ -28,22 +28,22 @@ class FMIOpenDataIO:
             pass
 
         if self.verbose:
-            print 'Fetching data from ',url
+            print(f"Fetching data from {url}")
             
         req = requests.get(url)
         return req
     
     def print_files(self, files):
         """ Print files to command line """
-        print "Found following files:"
+        print("Found following files:")
         for key in files:
-            print '    -' + key + ': '
-            print '      ' + files[key]['url']
+            print(f"    -{key}: ")
+            print(f"      {files[key]['url']}")
         
     def fill_dir(self, files, dir):
         """ Mirror files got from WFS response and in given directory """
         
-        print "dir " + dir
+        print(f"dir {dir}")
         existing_files = []
         try:
             existing_files = [f for f in listdir(dir) if isfile(join(dir, f))]
@@ -54,9 +54,9 @@ class FMIOpenDataIO:
         to_download = list(set(available_files) - set(existing_files))
         
         if self.verbose:
-            print 'Downloading following files:'
+            print("Downloading following files:")
             for file in to_download:
-                print ' '+file
+                print(f" {file}")
 
         for file in to_download:            
             self.download_file(file, files[file]['url'], dir)
@@ -65,13 +65,13 @@ class FMIOpenDataIO:
         """ Download file and save it given dir """
 
         if self.verbose:
-            print 'Starting to download file '+file+'...'
+            print(f"Starting to download file {file}...")
 
         with open(dir+'/'+file, 'wb') as handle:
             response = requests.get(url, stream=True)
         
-            if not response.ok:                
-                print "Error while getting the file ("+str(response.status_code)+')'
+            if not response.ok:
+                print(f"Error while getting the file ({str(response.status_code)})")
 
             if response.status_code == 408:
                 handle.close()

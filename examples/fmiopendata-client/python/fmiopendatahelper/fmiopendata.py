@@ -18,7 +18,7 @@ class FMIOpenData:
             url = el.get('{http://www.w3.org/1999/xlink}href')
 
             if self.verbose:
-                print 'Fetching parameter information from ',url
+                print(f"Fetching parameter information from {url}")
             req = requests.get(url)
             params = {}
             if req.status_code == 200:
@@ -47,7 +47,7 @@ class FMIOpenData:
             pass
 
         if self.verbose:
-            print 'Fetching data from ',url
+            print(f"Fetching data from {url}")
         req = requests.get(url)
         return req
     
@@ -55,7 +55,7 @@ class FMIOpenData:
         """ Get local id from INSPIRE procedure description """
 
         if self.verbose:
-            print 'Loading local id from url '+url
+            print(f"Loading local id from {url}")
         req = requests.get(url)
         
         id = 'modelname'
@@ -98,7 +98,7 @@ class FMIOpenData:
         """ Parse files from the response """
 
         if self.verbose:
-            print 'Splitting data...'
+            print("Splitting data...")
         files = {}    
 
         for el in tree.iter(tag='{http://www.opengis.net/wfs/2.0}member'):
@@ -138,14 +138,14 @@ class FMIOpenData:
         params = self.get_parameters(tree)
 
         if self.verbose:
-            print 'Splitting data...'
+            print("Splitting data...")
         data = []
         for el in tree.iter(tag='{http://www.opengis.net/gml/3.2}doubleOrNilReasonTupleList'):
             for pos in el.text.strip().split("\n"):
                 data.append(pos.strip().split(' '))
 
         if self.verbose:
-            print 'Fetching positions...'
+            print("Fetching positions...")
         positions = {}
         for el in tree.iter(tag='{http://www.opengis.net/gmlcov/1.0}positions'):
             pos = el.text.split()
@@ -174,20 +174,20 @@ class FMIOpenData:
 
     def print_parameters(self, params):
         for p,label in params.iteritems():
-            print p+': '+label
+            print(f"{p}': {label}")
 
     def print_positions(self, positions, params):
         """ Print data """
         
         for pos in positions:
-            print ''
-            print pos
-            print 4*'-'
+            print('')
+            print(pos)
+            print("----")
             for moment in positions[pos]:                
-                print ' '+moment['time'].isoformat()
+                print(f" {moment['time'].isoformat()}")
                 for p,value in moment.iteritems():
                     if p != 'time' and value != 'NaN':
-                        print '  '+params[p],value
+                        print("  {params[p],value}")
 
     def get_data(self, stored_query,bbox,firstdate,lastdate):
         """ Get data """
@@ -207,7 +207,7 @@ class FMIOpenData:
         url='http://opendata.fmi.fi/wfs?request=listStoredQueries'
 
         if self.verbose:
-            print "Fetching stored queries from ",url
+            print(f"Fetching stored queries from {url}")
         req = requests.get(url)
 
         if req.status_code == 200:
@@ -219,9 +219,9 @@ class FMIOpenData:
                 elf = id.rsplit(':',1)
                 try:
                     if(format == ''):
-                        print id
+                        print(id)
                     elif elf[1] == format:
-                        print id
+                        print(id)
                 except (KeyError, IndexError):
                     pass            
 

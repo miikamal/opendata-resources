@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 """Tool for retrieving data via FMI open data API"""
 
@@ -71,14 +71,14 @@ Examples:
         try:
             fmiod.print_positions(*fmiod.get_data(args.stored_query, args.bbox, args.starttime, args.endtime))
         except UnboundLocalError as e:
-            print e
+            print(e)
             sys.exit(2)
     elif args.what[0] == 'parameters':
         try:
             data, params = fmiod.get_data(args.stored_query, args.bbox, args.starttime, args.endtime)
             fmiod.print_parameters(params)
         except UnboundLocalError as e:
-            print e
+            print(e)
             sys.exit(2)
     elif args.what[0] == 'coverages':
         try:
@@ -91,7 +91,7 @@ Examples:
                 io.fill_dir(files, args.dir)
                 
         except UnboundLocalError as e:
-            print e
+            print(e)
             sys.exit(2)        
 
 
