@@ -225,7 +225,7 @@ class FMIOpenData:
                 id = el.get('id')
                 elf = id.rsplit(':',1)
                 try:
-                    if(format == ''):
+                    if format == '' or format == None:
                         print(id)
                     elif elf[1] == format:
                         print(id)
