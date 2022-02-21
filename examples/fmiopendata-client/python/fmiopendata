@@ -22,8 +22,8 @@ Examples:
     
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=description, epilog=epilog)
-    parser.add_argument('what', metavar='what', choices=['stored_queries', 'data', 'parameters', 'coverages'], nargs=1,
-                    help='What to do (stored_queries | data | parameters | coverages)')
+    parser.add_argument('what', metavar='what', choices=['stored_queries', 'data', 'parameters', 'coverages', 'describe'], nargs=1,
+                    help='What to do (stored_queries | data | parameters | coverages | describe)')
     parser.add_argument('--format', metavar='f', choices=['multipointcoverage', 'timevaluepair', 'simple', 'grid'], nargs='?',
                     help='Desired format for listing stored queris')
     parser.add_argument('--stored_query', metavar='q', nargs='?',
@@ -92,7 +92,13 @@ Examples:
                 
         except UnboundLocalError as e:
             print(e)
-            sys.exit(2)        
+            sys.exit(2)
+    elif args.what[0] == 'describe':
+        try:
+            fmiod.describe_storedquery(args.stored_query)
+        except UnboundLocalError as e:
+            print(e)
+            sys.exit(2)
 
 
 if __name__ == "__main__":

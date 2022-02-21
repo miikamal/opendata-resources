@@ -230,6 +230,20 @@ class FMIOpenData:
                     elif elf[1] == format:
                         print(id)
                 except (KeyError, IndexError):
-                    pass            
+                    pass
 
+    def describe_storedquery(self, stored_query):
+        """ Describe stored query """
+        url='http://opendata.fmi.fi/wfs?request=describeStoredQueries'
 
+        if self.verbose:
+            print(f"Fetching stored queries description from {url}")
+        req = requests.get(url)
+        if req.status_code == 200:
+            soup = BeautifulSoup(req.content, "xml")
+            descriptions = soup.findAll("StoredQueryDescription")
+            for description in descriptions:
+                if stored_query == "" or stored_query == None:
+                    print(description.prettify())
+                elif description.get("id") == stored_query:
+                    print(description.prettify())

@@ -7,7 +7,7 @@ Usage:
 ```
 positional arguments:
   what                  What to do (stored_queries | data | parameters |
-                        coverages)
+                        coverages | describe)
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -25,6 +25,7 @@ optional arguments:
 
 Examples:
 ./fmiopendata --format=multipointcoverage stored_queries
+./fmiopendata --stored_query=livi::observations::road::finland::multipointcoverage describe
 ./fmiopendata --stored_query=fmi::forecast::hirlam::surface::grid coverages
 ./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --bbox=19,59,25,65 --start=2015-01-01T00:00:00Z --end=2015-01-01T01:00:00Z data
 ./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --bbox=19,59,25,65 --start=2015-01-01T00:00:00Z --end=2015-01-01T01:00:00Z parameters
