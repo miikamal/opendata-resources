@@ -14,6 +14,7 @@ optional arguments:
   --format [f]          Desired format for listing stored queris
   --stored_query [q]    Stored query name
   --bbox [b]            Bounding box (llon,llat,urlon,urlat
+  --place [p]           Place name
   --starttime [s]       Start time (Y-m-d)
   --endtime [e]         End time (Y-m-d)
   --file_prefix [file_prefix]
@@ -26,6 +27,7 @@ optional arguments:
 Examples:
 ./fmiopendata --format=multipointcoverage stored_queries
 ./fmiopendata --stored_query=livi::observations::road::finland::multipointcoverage describe
+./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --place=Oulu data
 ./fmiopendata --stored_query=fmi::forecast::hirlam::surface::grid coverages
 ./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --bbox=19,59,25,65 --start=2015-01-01T00:00:00Z --end=2015-01-01T01:00:00Z data
 ./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --bbox=19,59,25,65 --start=2015-01-01T00:00:00Z --end=2015-01-01T01:00:00Z parameters
