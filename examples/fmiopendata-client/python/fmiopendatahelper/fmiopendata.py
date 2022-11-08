@@ -14,7 +14,7 @@ class FMIOpenData:
 
     def get_parameters(self, tree):
         """ Get parameters from response xml tree """
-        
+
         for el in tree.iter(tag='{http://www.opengis.net/om/2.0}observedProperty'):
             url = el.get('{http://www.w3.org/1999/xlink}href')
 
@@ -31,7 +31,7 @@ class FMIOpenData:
         self.params = params
         return params
 
-    def do_req(self, stored_query, bbox, place, firstdate, lastdate):
+    def do_req(self, stored_query, bbox, place, latlon, firstdate, lastdate):
         """ Do data request """
         url = 'http://opendata.fmi.fi/wfs?request=getFeature&storedquery_id='+stored_query
         try:
@@ -40,6 +40,10 @@ class FMIOpenData:
             pass
         try:
             url += '&place='+place
+        except:
+            pass
+        try:
+            url += '&latlon='+latlon
         except:
             pass
         try:
@@ -88,10 +92,10 @@ class FMIOpenData:
 
         return time
             
-    def get_files(self, stored_query, bbox, place, firstdate, lastdate, file_prefix, file_format):
+    def get_files(self, stored_query, bbox, place, latlon, firstdate, lastdate, file_prefix, file_format):
         """ Get downloadable coverages """
 
-        req = self.do_req(stored_query, bbox, place, firstdate, lastdate)
+        req = self.do_req(stored_query, bbox, place, latlon, firstdate, lastdate)
         if req.status_code == 200:
             xmlstring = req.content
             tree = ET.ElementTree(ET.fromstring(xmlstring))
@@ -194,10 +198,10 @@ class FMIOpenData:
                     if p != 'time' and value != 'NaN':
                         print(f"  {params[p],value}")
 
-    def get_data(self, stored_query, bbox, place, firstdate, lastdate):
+    def get_data(self, stored_query, bbox, place, latlon, firstdate, lastdate):
         """ Get data """
 
-        req = self.do_req(stored_query, bbox, place, firstdate, lastdate)
+        req = self.do_req(stored_query, bbox, place, latlon, firstdate, lastdate)
     
         if req.status_code == 200:
             xmlstring = req.content
