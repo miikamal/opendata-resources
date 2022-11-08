@@ -15,6 +15,7 @@ Examples:
 ./fmiopendata --format=multipointcoverage stored_queries
 ./fmiopendata --stored_query=livi::observations::road::finland::multipointcoverage describe
 ./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --place=Oulu data
+./fmiopendata --stored_query=fmi::forecast::harmonie::surface::point::multipointcoverage --latlon=66.08441705349463,24.814734751078966 data
 ./fmiopendata --stored_query=fmi::forecast::hirlam::surface::grid coverages
 ./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --bbox=19,59,25,65 --start=2015-01-01T00:00:00Z --end=2015-01-01T01:00:00Z data
 ./fmiopendata --stored_query=fmi::observations::weather::multipointcoverage --bbox=19,59,25,65 --start=2015-01-01T00:00:00Z --end=2015-01-01T01:00:00Z parameters
@@ -34,6 +35,8 @@ Examples:
                         help='Bounding box (llon,llat,urlon,urlat')
     parser.add_argument('--place', metavar='p', nargs='?',
                         help='Place name')
+    parser.add_argument('--latlon', metavar='l', nargs='?',
+                        help='(lat,lon) Coordinate pair')
     parser.add_argument('--starttime', metavar='s', nargs='?',
                         help='Start time (Y-m-d)')
     parser.add_argument('--endtime', metavar='e', nargs='?',
@@ -73,20 +76,20 @@ Examples:
             sys.exit(2)
     elif args.what[0] == 'data':
         try:
-            fmiod.print_positions(*fmiod.get_data(args.stored_query, args.bbox, args.place, args.starttime, args.endtime))
+            fmiod.print_positions(*fmiod.get_data(args.stored_query, args.bbox, args.place, args.latlon, args.starttime, args.endtime))
         except UnboundLocalError as e:
             print(e)
             sys.exit(2)
     elif args.what[0] == 'parameters':
         try:
-            data, params = fmiod.get_data(args.stored_query, args.bbox, args.place, args.starttime, args.endtime)
+            data, params = fmiod.get_data(args.stored_query, args.bbox, args.place, args.latlon, args.starttime, args.endtime)
             fmiod.print_parameters(params)
         except UnboundLocalError as e:
             print(e)
             sys.exit(2)
     elif args.what[0] == 'coverages':
         try:
-            files = fmiod.get_files(args.stored_query, args.bbox, args.place, args.starttime, args.endtime, args.file_prefix, args.file_format)
+            files = fmiod.get_files(args.stored_query, args.bbox, args.place, args.latlon, args.starttime, args.endtime, args.file_prefix, args.file_format)
 
             if verbose or args.dir is None:
                 io.print_files(files)
