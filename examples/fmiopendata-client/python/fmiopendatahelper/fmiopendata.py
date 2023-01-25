@@ -39,7 +39,7 @@ class FMIOpenData:
 
     def do_req(self, stored_query, bbox, place, latlon, firstdate, lastdate):
         """ Do data request """
-        url = 'http://opendata.fmi.fi/wfs?request=getFeature&storedquery_id='+stored_query
+        url = 'http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id='+stored_query
         try:
             url += '&bbox='+bbox
         except:
