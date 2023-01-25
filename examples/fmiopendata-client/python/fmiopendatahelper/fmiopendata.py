@@ -13,10 +13,16 @@ class FMIOpenData:
         self.verbose = verbose
 
     def get_parameters(self, tree):
-        """ Get parameters from response xml tree """
+        """ Returns parameter explanations and the labels for data """
 
         for el in tree.iter(tag='{http://www.opengis.net/om/2.0}observedProperty'):
             url = el.get('{http://www.w3.org/1999/xlink}href')
+
+            # Get the labels in right order (Code for this block done by ChatGPT)
+            labels = url.split("&param=", 1)[-1] # Remove everything from the url before the parameter list
+            labels = labels.split("&language", 1)[0] # Remove the language parameter
+            labels = labels.split(',')
+            labels = [x.lower() for x in labels if "opendata" not in x]
 
             if self.verbose:
                 print(f"Fetching parameter information from {url}")
@@ -29,11 +35,11 @@ class FMIOpenData:
                     params[p.get('{http://www.opengis.net/gml/3.2}id')] = p.find('{http://inspire.ec.europa.eu/schemas/omop/2.9}label').text
 
         self.params = params
-        return params
+        return params, labels
 
     def do_req(self, stored_query, bbox, place, latlon, firstdate, lastdate):
         """ Do data request """
-        url = 'http://opendata.fmi.fi/wfs?request=getFeature&storedquery_id='+stored_query
+        url = 'http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id='+stored_query
         try:
             url += '&bbox='+bbox
         except:
@@ -144,7 +150,7 @@ class FMIOpenData:
     def parse_multipointcoverage(self, tree):
         """ Parse multipointcoverage answers """
             
-        params = self.get_parameters(tree)
+        params, labels = self.get_parameters(tree)
 
         if self.verbose:
             print("Splitting data...")
@@ -169,8 +175,8 @@ class FMIOpenData:
                 moment = {'time': temporal_pos}
                 j = 0
 
-                for id,p in params.items():
-                    moment[id] = data[i][j]
+                for label in labels:
+                    moment[label] = data[i][j]
                     j = j+1
                     
                 if(spatial_pos not in positions):
