@@ -34,8 +34,13 @@ class FMIOpenData:
                 for p in tree.iter(tag='{http://inspire.ec.europa.eu/schemas/omop/2.9}ObservableProperty'):
                     params[p.get('{http://www.opengis.net/gml/3.2}id')] = p.find('{http://inspire.ec.europa.eu/schemas/omop/2.9}label').text
 
-        self.params = params
-        return params, labels
+        if "params" in vars().keys():
+            self.params = params
+            return params, labels
+        else:
+            if self.verbose:
+                print("\n!! No data returned with query !!\n")
+            return {}, [] # Return empty dictionary and list
 
     def do_req(self, stored_query, bbox, place, latlon, firstdate, lastdate):
         """ Do data request """
