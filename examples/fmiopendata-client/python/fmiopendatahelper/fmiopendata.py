@@ -1,6 +1,7 @@
 # coding: utf-8
 import requests
 import datetime
+import sys
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 
@@ -223,7 +224,7 @@ class FMIOpenData:
             print(f"Status_code: {req.status_code}")
             print("Contents:\n----")
             print(BeautifulSoup(req.content, "xml").prettify())
-            exit(-1)
+            sys.exit(1)
             
         return positions, params
 
