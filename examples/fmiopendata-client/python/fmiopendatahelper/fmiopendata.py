@@ -43,7 +43,7 @@ class FMIOpenData:
                 print("\n!! No data returned with query !!\n")
             return {}, [] # Return empty dictionary and list
 
-    def do_req(self, stored_query, bbox, place, latlon, firstdate, lastdate):
+    def do_req(self, stored_query, bbox, place, fmisid, latlon, firstdate, lastdate):
         """ Do data request """
         url = 'http://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id='+stored_query
         try:
@@ -52,6 +52,10 @@ class FMIOpenData:
             pass
         try:
             url += '&place='+place
+        except:
+            pass
+        try:
+            url += '&fmisid='+fmisid
         except:
             pass
         try:
@@ -104,10 +108,10 @@ class FMIOpenData:
 
         return time
             
-    def get_files(self, stored_query, bbox, place, latlon, firstdate, lastdate, file_prefix, file_format):
+    def get_files(self, stored_query, bbox, place, fmisid, latlon, firstdate, lastdate, file_prefix, file_format):
         """ Get downloadable coverages """
 
-        req = self.do_req(stored_query, bbox, place, latlon, firstdate, lastdate)
+        req = self.do_req(stored_query, bbox, place, fmisid, latlon, firstdate, lastdate)
         if req.status_code == 200:
             xmlstring = req.content
             tree = ET.ElementTree(ET.fromstring(xmlstring))
@@ -210,10 +214,10 @@ class FMIOpenData:
                     if p != 'time' and value != 'NaN':
                         print(f"  {params[p],value}")
 
-    def get_data(self, stored_query, bbox, place, latlon, firstdate, lastdate):
+    def get_data(self, stored_query, bbox, place, fmisid, latlon, firstdate, lastdate):
         """ Get data """
 
-        req = self.do_req(stored_query, bbox, place, latlon, firstdate, lastdate)
+        req = self.do_req(stored_query, bbox, place, fmisid, latlon, firstdate, lastdate)
     
         if req.status_code == 200:
             xmlstring = req.content
